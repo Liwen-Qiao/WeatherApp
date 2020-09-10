@@ -19,7 +19,7 @@ class WAWeatherDetailView: UIView {
         super.init(frame:frame)
         
         cityLabel = UILabel()
-        cityLabel.text = "Getting Weather Infomation..."
+        cityLabel.text = "Loading Infomation..."
         cityLabel.textAlignment = .center
         cityLabel.textColor = UIColor(named: "weatherColor")
         cityLabel.tintColor = UIColor(named: "weatherColor")

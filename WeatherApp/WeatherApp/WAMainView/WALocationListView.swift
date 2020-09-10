@@ -10,12 +10,18 @@
 import UIKit
 import EasyPeasy
 
+protocol WACitySelectedDelegate: class {
+    func citySelected(index: Int)
+}
+
 class WALocationListView: UITableView{
     
     private var cityList: [[String: String]] = []
     private var cityNameList: [String] = []
     
-    init(frame: CGRect,coreDataStack:  WACoreDataStack){
+    private weak var citySelectedDelegate: WACitySelectedDelegate?
+    
+    init(frame: CGRect,coreDataStack:  WACoreDataStack,citySelectedDelegate: WACitySelectedDelegate ){
 
         super.init(frame: frame, style: .plain)
         
@@ -23,6 +29,7 @@ class WALocationListView: UITableView{
         self.separatorInset =  UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 10)
         self.dataSource = self
         self.delegate = self
+        self.citySelectedDelegate = citySelectedDelegate
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -48,6 +55,10 @@ extension WALocationListView: UITableViewDataSource, UITableViewDelegate{
        let cell = tableView.dequeueReusableCell(withIdentifier: "WALocationListCell", for: indexPath) as! WALocationListCell
         cell.updateLocationNameList(locationName: cityNameList[indexPath.row])
         return cell
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        self.citySelectedDelegate?.citySelected(index: indexPath.row)
     }
     
     // delete table cell

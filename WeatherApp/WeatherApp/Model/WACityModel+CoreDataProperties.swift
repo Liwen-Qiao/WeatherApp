@@ -18,6 +18,8 @@ extension WACityModel {
 
     @NSManaged public var cityName: String?
     @NSManaged public var cityKey: String
+    @NSManaged public var cityTem: Double
+    @NSManaged public var cityConditionId: Int16
     @NSManaged public var userModel: WAUserModel?
 
 }

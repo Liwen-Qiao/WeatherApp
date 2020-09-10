@@ -13,13 +13,20 @@ import CoreLocation
 
 class WAMainPage: UIViewController {
     
+    //core data
     var coreDataStack: WACoreDataStack!
+    //api
     private weak var apiManager: WAApiManager?
-    
+    //view
     private var currentLocationWeatherView: WACurrentLocationView!
     private var lacationListTableView: WALocationListView!
+    private var addCityView: WAAddCityView!
+    //location
     private var locationManager: CLLocationManager!
+    //data
     private var userModel: WAUserModel!
+    private var cithModelList: [WACityModel] = []
+    //flag
     private var currentCityName: String = ""
     private var currentCityKey: String = ""
     
@@ -62,11 +69,6 @@ class WAMainPage: UIViewController {
         currentLocationWeatherView.backgroundColor = .clear
         self.view.addSubview(currentLocationWeatherView)
         currentLocationWeatherView.easy.layout([Top(60),Left(0),Right(0), Height(UIScreen.main.bounds.height/2)])
-        
-        
-        let currentCityModel = WACityModel(cityName: "Toronto", cityKey: "55488", context: self.coreDataStack.managedContext)
-        userModel.addToCityList(currentCityModel)
-        coreDataStack.saveContext()
     }
     
     func setupLocationListTableView(){
@@ -77,29 +79,45 @@ class WAMainPage: UIViewController {
         self.view.addSubview(addBt)
         addBt.easy.layout([Top(0).to(currentLocationWeatherView), Right(10), Width(40), Height(40)])
         
-        lacationListTableView = WALocationListView(frame: CGRect.zero, coreDataStack: coreDataStack)
+        lacationListTableView = WALocationListView(frame: CGRect.zero, coreDataStack: coreDataStack, citySelectedDelegate: self)
         lacationListTableView.backgroundColor = UIColor.white.withAlphaComponent(0.2)
         self.view.addSubview(lacationListTableView)
         lacationListTableView.easy.layout([Top(0).to(addBt),Left(0),Right(0), Height(UIScreen.main.bounds.height/2)])
         
+        getLocolCityListInfo()
+        
+    }
+    
+    @objc func addBtClick(){
+        addCityView = WAAddCityView(frame: CGRect.zero, userModel: self.userModel, addNewCityDelegate: self, coreDataStack: self.coreDataStack)
+        self.view.addSubview(addCityView)
+        addCityView.easy.layout(CenterX(0),Top(90),Height(200),Width(280))
+        
+    }
+    
+    func getLocolCityListInfo(){
         var cityNameList: [String] = []
+        cithModelList.removeAll()
         let userModelFetchRequest: NSFetchRequest<WAUserModel> = WAUserModel.fetchRequest()
         do {
             let results = try coreDataStack.managedContext.fetch(userModelFetchRequest)
            // print(results)
             guard !results.isEmpty, let cityList = results[0].cityList else {return}
-            for city in cityList{
+            for (index,city) in cityList.enumerated(){
                 let city = city as! WACityModel
+                var httpRequest: [String: String] = [:]
+                httpRequest.updateValue("get", forKey: "httpMethod")
+                httpRequest.updateValue("currentconditions/v1/\(city.cityKey)", forKey: "httpSubUrl")
+                var urlParams: [String: String] = [:]
+                urlParams.updateValue("8jqwJ6zNPy3II2I2mZEXenPlOVf7PBXS", forKey: "apikey")
+                self.apiManager?.httpRequestAction(httpRequest: httpRequest, bodyParams: nil, urlParams: urlParams, httpTag: "CityWeather\(String(index))")
+                cithModelList.append(city)
                 cityNameList.append(city.cityName ?? "")
             }
             lacationListTableView.updateCityNameList(cityNameList: cityNameList)
         } catch let error as NSError {
             print("Could not fetch \(error), \(error.userInfo)")
         }
-    }
-    
-    @objc func addBtClick(){
-        
     }
 }
 
@@ -132,7 +150,6 @@ extension WAMainPage: WAApiManager{
         if httpTag == "getCurrentLocation"{
             let httpResultData = httpResult as? [String: Any] ?? [:]
             let parentCity = httpResultData["ParentCity"] as? [String: Any] ?? [:]
-            print("parentCity:\(parentCity)")
             currentCityName = parentCity["EnglishName"] as? String ?? ""
             currentCityKey = parentCity["Key"] as? String ?? ""
             var httpRequest: [String: String] = [:]
@@ -146,18 +163,30 @@ extension WAMainPage: WAApiManager{
             let temperatureData = httpResultData[0]["Temperature"] as? [String: Any] ?? [:]
             let metricData = temperatureData["Metric"] as? [String: Any] ?? [:]
             let value = metricData["Value"] as? Double ?? 0
-            let conditionId = httpResultData[0]["WeatherIcon"]
-            self.currentLocationWeatherView.updateLocationInfo(cityName: currentCityName, temperature: value, conditionName: WAConstant.getConditionName(conditionId: conditionId as? Int ?? 0))
+            let conditionId = httpResultData[0]["WeatherIcon"] as? Int16 ?? 0
+            self.currentLocationWeatherView.updateLocationInfo(cityName: currentCityName, temperature: value, conditionName: WAConstant.getConditionName(conditionId: conditionId))
             if currentCityName != ""{
-                let currentCityModel = WACityModel(cityName: "Toronto", cityKey: currentCityKey, context: self.coreDataStack.managedContext)
+                let currentCityModel = WACityModel(cityName: currentCityName, cityKey: currentCityKey, cityTem: value, cityConditionId: conditionId, context: self.coreDataStack.managedContext)
                 userModel.addToCityList(currentCityModel)
                 coreDataStack.saveContext()
             }
-        }else{}
+        }else {}
     }
 }
 
 
+extension WAMainPage: WACitySelectedDelegate{
+    func citySelected(index: Int) {
+        let cityModel = cithModelList[index]
+        self.currentLocationWeatherView.updateLocationInfo(cityName: cityModel.cityName ?? "", temperature: cityModel.cityTem , conditionName: WAConstant.getConditionName(conditionId: cityModel.cityConditionId))
+    }
+}
+
+extension WAMainPage: WAAddNewCityDelegate{
+    func addNewCity() {
+        getLocolCityListInfo()
+    }
+}
 
 //print("httpResult:\(httpResult)")
 //            let httpResultData = httpResult["DailyForecasts"]

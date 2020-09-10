@@ -13,8 +13,9 @@ struct WAConstant {
     
     static let fontTitle = UIFont.systemFont(ofSize: 80)
     static let fontNormal = UIFont.systemFont(ofSize: 30)
+    static let fontSmall = UIFont.systemFont(ofSize: 16)
     
-    static func getConditionName(conditionId: Int) -> String{
+    static func getConditionName(conditionId: Int16) -> String{
         switch conditionId {
         case 12...18:
             return "cloud.drizzle"
