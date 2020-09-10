@@ -6,4 +6,11 @@
 //  Copyright © 2020 qiaoliwen. All rights reserved.
 //
 
-import Foundation
+import UIKit
+
+struct WAConstant {
+    static let BASE_URL = "http://dataservice.accuweather.com/"
+    
+    static let fontTitle = UIFont.systemFont(ofSize: 80)
+    static let fontNormal = UIFont.systemFont(ofSize: 30)
+}

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="16119" systemVersion="19G73" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="WACityModel" representedClassName="WACityModel" syncable="YES">
+        <attribute name="cityKey" optional="YES" attributeType="String"/>
+        <attribute name="cityName" optional="YES" attributeType="String"/>
+        <relationship name="userModel" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="WAUserModel" inverseName="cityList" inverseEntity="WAUserModel"/>
+    </entity>
+    <entity name="WAUserModel" representedClassName="WAUserModel" syncable="YES">
+        <attribute name="userId" optional="YES" attributeType="String"/>
+        <relationship name="cityList" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="WACityModel" inverseName="userModel" inverseEntity="WACityModel"/>
+    </entity>
+    <elements>
+        <element name="WACityModel" positionX="-54" positionY="-9" width="128" height="88"/>
+        <element name="WAUserModel" positionX="-63" positionY="-18" width="128" height="73"/>
+    </elements>
+</model>
