@@ -19,13 +19,15 @@ class WAMainPage: UIViewController {
     private var currentLocationWeatherView: WACurrentLocationView!
     private var lacationListTableView: WALocationListView!
     private var locationManager: CLLocationManager!
+    private var userModel: WAUserModel!
+    private var currentCityName: String = ""
+    private var currentCityKey: String = ""
     
-    private var userModel = WAUserModel()
-    
-    init(coreDataStack: WACoreDataStack) {
+    init(userModel: WAUserModel, coreDataStack: WACoreDataStack) {
         self.coreDataStack = coreDataStack
         super.init(nibName: nil, bundle: nil)
         self.apiManager = self
+        self.userModel = userModel
     }
     
     required init?(coder: NSCoder) {
@@ -34,7 +36,7 @@ class WAMainPage: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "WeFunGame"
+        self.navigationController?.navigationBar.isHidden = true
         self.edgesForExtendedLayout = []
         setupBackgroundImage()
         setupCurrentLocationWeatherView()
@@ -59,7 +61,8 @@ class WAMainPage: UIViewController {
         currentLocationWeatherView = WACurrentLocationView()
         currentLocationWeatherView.backgroundColor = .clear
         self.view.addSubview(currentLocationWeatherView)
-        currentLocationWeatherView.easy.layout([Top(0),Left(0),Right(0), Height(UIScreen.main.bounds.height/2)])
+        currentLocationWeatherView.easy.layout([Top(60),Left(0),Right(0), Height(UIScreen.main.bounds.height/2)])
+        
         
         let currentCityModel = WACityModel(cityName: "Toronto", cityKey: "55488", context: self.coreDataStack.managedContext)
         userModel.addToCityList(currentCityModel)
@@ -125,18 +128,16 @@ extension WAMainPage: CLLocationManagerDelegate{
 
 extension WAMainPage: WAApiManager{
     func doActionAfterHttp(httpResult: Any, httpTag: String) {
-        var cityName: String = ""
-        var cityKey: String = ""
+        
         if httpTag == "getCurrentLocation"{
             let httpResultData = httpResult as? [String: Any] ?? [:]
             let parentCity = httpResultData["ParentCity"] as? [String: Any] ?? [:]
             print("parentCity:\(parentCity)")
-            cityName = parentCity["EnglishName"] as? String ?? ""
-            cityKey = parentCity["Key"] as? String ?? ""
-            print(cityName)
+            currentCityName = parentCity["EnglishName"] as? String ?? ""
+            currentCityKey = parentCity["Key"] as? String ?? ""
             var httpRequest: [String: String] = [:]
             httpRequest.updateValue("get", forKey: "httpMethod")
-            httpRequest.updateValue("currentconditions/v1/\(cityKey)", forKey: "httpSubUrl")
+            httpRequest.updateValue("currentconditions/v1/\(currentCityKey)", forKey: "httpSubUrl")
             var urlParams: [String: String] = [:]
             urlParams.updateValue("8jqwJ6zNPy3II2I2mZEXenPlOVf7PBXS", forKey: "apikey")
             self.apiManager?.httpRequestAction(httpRequest: httpRequest, bodyParams: nil, urlParams: urlParams, httpTag: "getCurrentLocationWeather")
@@ -145,13 +146,13 @@ extension WAMainPage: WAApiManager{
             let temperatureData = httpResultData[0]["Temperature"] as? [String: Any] ?? [:]
             let metricData = temperatureData["Metric"] as? [String: Any] ?? [:]
             let value = metricData["Value"] as? Double ?? 0
-           
-            self.currentLocationWeatherView.updateLocationInfo(cityName: cityName, temperature: value)
-            //if cityName != ""{
-                let currentCityModel = WACityModel(cityName: "Toronto", cityKey: cityKey, context: self.coreDataStack.managedContext)
+            let conditionId = httpResultData[0]["WeatherIcon"]
+            self.currentLocationWeatherView.updateLocationInfo(cityName: currentCityName, temperature: value, conditionName: WAConstant.getConditionName(conditionId: conditionId as? Int ?? 0))
+            if currentCityName != ""{
+                let currentCityModel = WACityModel(cityName: "Toronto", cityKey: currentCityKey, context: self.coreDataStack.managedContext)
                 userModel.addToCityList(currentCityModel)
                 coreDataStack.saveContext()
-            //}
+            }
         }else{}
     }
 }

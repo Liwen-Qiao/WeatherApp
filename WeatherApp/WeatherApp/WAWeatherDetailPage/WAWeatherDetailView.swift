@@ -20,18 +20,22 @@ class WAWeatherDetailView: UIView {
         
         cityLabel = UILabel()
         cityLabel.text = "Getting Weather Infomation..."
+        cityLabel.textAlignment = .center
+        cityLabel.textColor = UIColor(named: "weatherColor")
+        cityLabel.tintColor = UIColor(named: "weatherColor")
         cityLabel.font = WAConstant.fontNormal
         self.addSubview(cityLabel)
-        cityLabel.easy.layout([Top(0),Left(0),Right(0), Height(60)])
+        cityLabel.easy.layout([Top(0),Height(90),Left(0),Right(0)])
         
         conditionImageView = UIImageView()
-        conditionImageView.image = #imageLiteral(resourceName: "background")
+        conditionImageView.tintColor = UIColor(named: "weatherColor")
         self.addSubview(conditionImageView)
-        conditionImageView.easy.layout([Top(0).to(cityLabel),CenterX(0), Height(UIScreen.main.bounds.height/5), Width(UIScreen.main.bounds.height/5)])
+        conditionImageView.easy.layout([Top(0).to(cityLabel),CenterX(0), Height(UIScreen.main.bounds.height/6), Width(UIScreen.main.bounds.height/6)])
         
         temperatureLabel = UILabel()
         temperatureLabel.font = WAConstant.fontTitle
         temperatureLabel.textAlignment = .center
+        temperatureLabel.textColor = UIColor(named: "weatherColor")
         temperatureLabel.tintColor = UIColor(named: "weatherColor")
         self.addSubview(temperatureLabel)
         temperatureLabel.easy.layout([Top(0).to(conditionImageView),CenterX(0), Height(UIScreen.main.bounds.height/5), Width(UIScreen.main.bounds.width-40)])
@@ -43,9 +47,11 @@ class WAWeatherDetailView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func updateLocationInfo(cityName: String, temperature: Double){
+    func updateLocationInfo(cityName: String, temperature: Double, conditionName: String){
         cityLabel.text = cityName
         temperatureLabel.text = "\(String(temperature))" + "°C"
+        conditionImageView.image = UIImage(systemName: conditionName)
+        conditionImageView.tintColorDidChange()
     }
 }
 

@@ -28,6 +28,7 @@
 		1E10A8E5250A4CD100A33C2F /* WACityModel+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E10A8E1250A4CD100A33C2F /* WACityModel+CoreDataProperties.swift */; };
 		1E10A8E6250A4CD100A33C2F /* WACityModel+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E10A8E2250A4CD100A33C2F /* WACityModel+CoreDataClass.swift */; };
 		1E10A8E7250A4CD100A33C2F /* WAUserModel+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E10A8E3250A4CD100A33C2F /* WAUserModel+CoreDataClass.swift */; };
+		1E10A8EA250AB0D100A33C2F /* WAAddCityPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E10A8E9250AB0D100A33C2F /* WAAddCityPage.swift */; };
 		56BAA2B443CB2AC98D0C32C5 /* Pods_WeatherAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3D5D90D1CEF1BB54A59AEB1 /* Pods_WeatherAppTests.framework */; };
 		84D06D86884174F5984F7D16 /* Pods_WeatherApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A20CF410A55EDE344EBEE5AE /* Pods_WeatherApp.framework */; };
 		C39E84DA45357A89882406DA /* Pods_WeatherApp_WeatherAppUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 476C9611AAE412DF2ECC81FB /* Pods_WeatherApp_WeatherAppUITests.framework */; };
@@ -78,6 +79,7 @@
 		1E10A8E1250A4CD100A33C2F /* WACityModel+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WACityModel+CoreDataProperties.swift"; sourceTree = "<group>"; };
 		1E10A8E2250A4CD100A33C2F /* WACityModel+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WACityModel+CoreDataClass.swift"; sourceTree = "<group>"; };
 		1E10A8E3250A4CD100A33C2F /* WAUserModel+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "WAUserModel+CoreDataClass.swift"; sourceTree = "<group>"; };
+		1E10A8E9250AB0D100A33C2F /* WAAddCityPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WAAddCityPage.swift; sourceTree = "<group>"; };
 		456B54127D059843536930D7 /* Pods-WeatherApp-WeatherAppUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WeatherApp-WeatherAppUITests.debug.xcconfig"; path = "Target Support Files/Pods-WeatherApp-WeatherAppUITests/Pods-WeatherApp-WeatherAppUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		476C9611AAE412DF2ECC81FB /* Pods_WeatherApp_WeatherAppUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_WeatherApp_WeatherAppUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4E93AB6E41EB4DFF7411D176 /* Pods-WeatherAppTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WeatherAppTests.release.xcconfig"; path = "Target Support Files/Pods-WeatherAppTests/Pods-WeatherAppTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -146,6 +148,7 @@
 				1E10A8842509DEF000A33C2F /* SceneDelegate.swift */,
 				1E10A8BC2509E24300A33C2F /* WACoreDataStack.swift */,
 				1E10A8B82509E16D00A33C2F /* WAConstant.swift */,
+				1E10A8E8250AB0B000A33C2F /* WAAddCityPage */,
 				1E10A8D1250A018000A33C2F /* WANetworking */,
 				1E10A8B72509E0E400A33C2F /* WAMainView */,
 				1E10A8C42509E6DC00A33C2F /* WAWeatherDetailPage */,
@@ -214,6 +217,14 @@
 				1E10A8D2250A01C400A33C2F /* WAApiManager.swift */,
 			);
 			path = WANetworking;
+			sourceTree = "<group>";
+		};
+		1E10A8E8250AB0B000A33C2F /* WAAddCityPage */ = {
+			isa = PBXGroup;
+			children = (
+				1E10A8E9250AB0D100A33C2F /* WAAddCityPage.swift */,
+			);
+			path = WAAddCityPage;
 			sourceTree = "<group>";
 		};
 		3A453F6A12DAB571E15BA688 /* Pods */ = {
@@ -489,6 +500,7 @@
 				1E10A8C12509E60100A33C2F /* WALocationListView.swift in Sources */,
 				1E10A88D2509DEF000A33C2F /* WADB.xcdatamodeld in Sources */,
 				1E10A8D3250A01C400A33C2F /* WAApiManager.swift in Sources */,
+				1E10A8EA250AB0D100A33C2F /* WAAddCityPage.swift in Sources */,
 				1E10A8E4250A4CD100A33C2F /* WAUserModel+CoreDataProperties.swift in Sources */,
 				1E10A8E6250A4CD100A33C2F /* WACityModel+CoreDataClass.swift in Sources */,
 				1E10A8832509DEF000A33C2F /* AppDelegate.swift in Sources */,

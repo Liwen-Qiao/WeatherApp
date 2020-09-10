@@ -31,6 +31,7 @@ class WALocationListView: UITableView{
     
     func updateCityNameList(cityNameList: [String]){
         self.cityNameList = cityNameList
+        self.reloadData()
     }
     
     func updateCityList(cityList: [[String: String]]){
@@ -45,9 +46,7 @@ extension WALocationListView: UITableViewDataSource, UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
        let cell = tableView.dequeueReusableCell(withIdentifier: "WALocationListCell", for: indexPath) as! WALocationListCell
-        let cityWeatherInfo = cityList[indexPath.row]
-        
-        cell.updateLocationListCell(locationName: cityWeatherInfo["cityName"] ?? "", locationTem: cityWeatherInfo["cityTem"] ?? "", locationWeatherIcon: cityWeatherInfo["cityIcon"] ?? "")
+        cell.updateLocationNameList(locationName: cityNameList[indexPath.row])
         return cell
     }
     
@@ -72,5 +71,9 @@ extension WALocationListView: UITableViewDataSource, UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
         return true
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        60
     }
 }

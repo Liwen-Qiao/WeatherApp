@@ -22,7 +22,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         window?.windowScene = windowScene
-        let page = WAMainPage(coreDataStack: coreDataStack)
+        let userModel = WAUserModel(userId: UUID().uuidString, context: self.coreDataStack.managedContext)
+        let page = WAMainPage(userModel: userModel, coreDataStack: coreDataStack)
         let naviPage = UINavigationController(rootViewController: page)
         page.coreDataStack = coreDataStack
         window?.rootViewController = naviPage

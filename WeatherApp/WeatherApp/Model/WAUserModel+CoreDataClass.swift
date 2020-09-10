@@ -16,10 +16,10 @@ public class WAUserModel: NSManagedObject {
         super.init(entity: entity, insertInto: context)
     }
     
-    init(context: NSManagedObjectContext) {
+    init(userId: String, context: NSManagedObjectContext) {
         let userModelEntity = NSEntityDescription.entity(forEntityName: "WAUserModel", in: context)!
         super.init (entity: userModelEntity, insertInto: context)
        
-        self.userId = UUID().uuidString
+        self.userId = userId
     }
 }
