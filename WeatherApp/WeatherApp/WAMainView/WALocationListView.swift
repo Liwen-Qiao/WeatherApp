@@ -16,7 +16,7 @@ protocol WACitySelectedDelegate: class {
 
 class WALocationListView: UITableView{
     
-    private var cityList: [[String: String]] = []
+    private var cityList: [WACityModel] = []
     private var cityNameList: [String] = []
     
     private weak var citySelectedDelegate: WACitySelectedDelegate?
@@ -36,24 +36,20 @@ class WALocationListView: UITableView{
         fatalError("init(coder:) has not been implemented")
     }
     
-    func updateCityNameList(cityNameList: [String]){
-        self.cityNameList = cityNameList
-        self.reloadData()
-    }
-    
-    func updateCityList(cityList: [[String: String]]){
+    func updateCityList(cityList: [WACityModel]){
         self.cityList = cityList
+        self.reloadData()
     }
 }
 
 extension WALocationListView: UITableViewDataSource, UITableViewDelegate{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        self.cityNameList.count
+        self.cityList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
        let cell = tableView.dequeueReusableCell(withIdentifier: "WALocationListCell", for: indexPath) as! WALocationListCell
-        cell.updateLocationNameList(locationName: cityNameList[indexPath.row])
+        cell.updateLocationListCell(locationName: cityList[indexPath.row].cityName ?? "", locationTem: cityList[indexPath.row].cityTem, locationWeatherIcon: WAConstant.getConditionName(conditionId: cityList[indexPath.row].cityConditionId) )
         return cell
     }
     

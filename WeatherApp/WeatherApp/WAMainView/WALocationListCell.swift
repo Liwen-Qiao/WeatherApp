@@ -32,20 +32,20 @@ class WALocationListCell: UITableViewCell {
         locationTemLbl.textAlignment = .left
         locationTemLbl.tintColor = UIColor(named: "weatherColor")
         self.addSubview(locationTemLbl)
-        locationTemLbl.easy.layout([Right(20),CenterY(0), Height(60), Width(80)])
+        locationTemLbl.easy.layout([Right(20),CenterY(0), Height(60), Width(100)])
         
         locationWeatherIconView = UIImageView()
+        locationWeatherIconView.tintColor = UIColor(named: "weatherColor")
+        self.addSubview(locationWeatherIconView)
+        locationWeatherIconView.easy.layout([Right(10).to(locationTemLbl),CenterY(0), Height(40), Width(40)])
         
     }
     
     required init?(coder aDecoder: NSCoder) { fatalError("init(coder:) has not been implemented") }
     
-    func updateLocationNameList(locationName: String){
+    func updateLocationListCell(locationName: String, locationTem: Double, locationWeatherIcon: String){
         locationLbl.text = locationName
-    }
-    
-    func updateLocationListCell(locationTem: String, locationWeatherIcon: String){
-        locationTemLbl.text = locationTem
+        locationTemLbl.text = String(locationTem) + "°C"
         locationWeatherIconView.image = UIImage(systemName: locationWeatherIcon)
     }
 }

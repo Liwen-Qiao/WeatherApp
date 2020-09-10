@@ -114,7 +114,7 @@ class WAMainPage: UIViewController {
                 cithModelList.append(city)
                 cityNameList.append(city.cityName ?? "")
             }
-            lacationListTableView.updateCityNameList(cityNameList: cityNameList)
+            lacationListTableView.updateCityList(cityList: cithModelList)
         } catch let error as NSError {
             print("Could not fetch \(error), \(error.userInfo)")
         }
